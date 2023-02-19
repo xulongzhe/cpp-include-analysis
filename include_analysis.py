@@ -36,12 +36,13 @@ class DependencyAnalyze:
             for cur_include in all_includes:
                 if cur_include.system:
                     continue
-                added = extra_includes.setdefault(cur_include.abs_path, [])
+                extra = extra_includes.setdefault(cur_include.abs_path, set())
                 for hicld in has_includes:
-                    if hicld in self.get_includes_recursive(cur_include.abs_path):
+                    iner_headers = self.get_includes_recursive(cur_include.abs_path)
+                    if hicld in iner_headers:
                         print(f'需添加 {hicld}')
                     else:
-                        added.append(hicld)
+                        extra.add(hicld)
                         print(f'源文件 {src}')
                         print(f'头文件 {cur_include.name}')
                         print(f'已引入 {has_includes}')
